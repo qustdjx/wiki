@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!-- saved from url=(0079)https://mp.weixin.qq.com/wiki?action=doc&id=mp1433747358&t=0.7731956734666912#0 -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link onerror="wx_loaderror(this)" rel="stylesheet" type="text/css" href="../res_iframe3b054f.css">
+    <link onerror="wx_loaderror(this)" rel="stylesheet" type="text/css" href="../bootstrap.min3a7b39.css">
+    <link onerror="wx_loaderror(this)" rel="stylesheet" type="text/css" href="../res_iframe3a9c8b.css">
+</head>
+<body class="page_doc screen_small">
+<div class="weui-desktop-layout__main__hd"><h2 id="title" class="weui-desktop-page__title">Third</h2></div>
+<div class="weui-desktop-layout__main__bd weui-desktop-panel main_bd">
+    <div class="article_box">
+        <div class="inner">
+            <div id="content" class="news_content">
+                <p>目录</p>
+                <p><a href="#0">1
+                    概要说明</a></p>
+                <p><a href="#1">2
+                    报警内容说明</a></p>
+                <p><a href="#2">3
+                    各类报警的排查方法</a></p>
+                <p><a href="#3">4
+                    常见问题</a></p>
+                <p><a href="#4">5
+                    附录</a></p>
+                <p><a href="#5">5.1
+                    附录1：微信推送的消息事件列表和响应格式</a></p>
+                <p><a href="#6">5.2
+                    附录2：查看服务器性能负载的常用工具</a></p>
+                <p><a href="#7">5.3
+                    附录3：nginx配置和排查指引</a></p>
+                <p><span id="0"></span></p>
+                <h2 id="-"><strong>概要说明</strong></h2>
+                <p>微信公众平台已对外开放接口报警，当微信服务器向开发者推送消息失败次数达到预定阈值时，会将报警消息发送到指定微信报警群中（设置方式：公众平台-&gt;开发-运维中心-&gt;接口报警），请开发者积极主动关注报警，即时解决故障，提高微信公众号的服务质量。</p>
+                <p>
+                    <strong>为了更好地根据报警信息尾部的实例（提供了openid及时间戳stamp）进行问题排查，开发者需要在接入层、逻辑层等每一个层级都加上包含关键信息的详细日志，以利于快速定位问题。</strong>
+                </p>
+                <p>报警目前有2类：</p>
+                <p>1.通用报警，所有开发者都需要关注。</p>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>类型</th>
+                        <th>描述</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>DNS失败</td>
+                        <td>微信服务器向公众号推送消息或事件时，解析DNS失败</td>
+                    </tr>
+                    <tr>
+                        <td>DNS超时</td>
+                        <td>微信服务器向公众号推送消息或事件时，解析DNS超时，超时时间为5秒</td>
+                    </tr>
+                    <tr>
+                        <td>连接超时</td>
+                        <td>微信服务器连接公众号开发者服务器时发生超时，超时时间为5秒</td>
+                    </tr>
+                    <tr>
+                        <td>请求超时</td>
+                        <td>微信服务器向公众号推送消息或事件后，开发者5秒内没有返回</td>
+                    </tr>
+                    <tr>
+                        <td>回应失败</td>
+                        <td>微信服务器向公众号推送消息或事件后，得到的回应不合法</td>
+                    </tr>
+                    <tr>
+                        <td>MarkFail（自动屏蔽）</td>
+                        <td>微信服务器向公众号推送消息或事件发生多次失败后，暂时不推送消息，一分钟后解除屏蔽</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p>2.公众号第三方平台报警，只有在微信开放平台（open.weixin.qq.com）上申请成为公众号第三方平台的开发者，才需要关注此报警。</p>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>类型</th>
+                        <th>描述</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>推送component_verify_ticket超时</td>
+                        <td>推送component_verify_ticket时，开发者5S内没有返回</td>
+                    </tr>
+                    <tr>
+                        <td>推送component_verify_ticket失败</td>
+                        <td>推送component_verify_ticket时，开发者没有返回success</td>
+                    </tr>
+                    <tr>
+                        <td>推送第三方平台消息超时</td>
+                        <td>推送第三方平台消息（如取消授权消息）等，第三方平台5秒内没有返回</td>
+                    </tr>
+                    <tr>
+                        <td>推送第三方平台消息失败</td>
+                        <td>推送第三方平台消息（如取消授权消息）等，第三方平台没有返回success</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p>Windows 64位版本：<a href="../file/test.txt" download="file/test.txt">下载地址</a></p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div style="position: absolute; right: 0px; bottom: 0px; visibility: visible;">
+
+</div>
+</body>
+</html>
