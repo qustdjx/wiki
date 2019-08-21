@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="static/img/ico/favicon.ico">
+
+    <title>View Title</title>
+
+    <!-- Ploceidae core CSS -->
+    <link href="static/css/ploceidae.css" rel="stylesheet">
+    <!-- perfect-scrollbar CSS -->
+    <link href="static/css/perfect-scrollbar.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="static/css/plugins/iCheck/minimal/blue.css">
+    <!-- datepicker 普通日期选择器-->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="static/js/html5shiv.min.js"></script>
+    <script src="static/js/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body style="overflow: scroll;">
+<!-- Main Header -->
+
+
+    <!-- Content Wrapper. Contains page content -->
+
+   <div class="content">
+            <ol class="breadcrumb">
+                <li><a href="javascript:;"><i class="icon-store"></i> Sprint</a></li>
+                <li><a href="javascript:;">DATA</a></li>
+
+            </ol>
+            <div class="box box-primary">
+
+                <!-- /.box-header -->
+                <div class="box-body no-padding">
+
+                    <div class="mailbox-controls">
+                        <form class="form-inline">
+
+                            <div class="form-group">
+                                <label>关键字：</label>
+                                <input type="text" name="keyword" id="keyword" value="" class="form-control input-sm " placeholder="input keyword">
+                            </div>
+
+
+                            <a href="javascript:;" id="search_form"  role="button" class="btn btn-primary btn-sm"><i class="icon-magnifier"></i> Go</a>
+                        </form>
+                    </div>
+
+                    <div class="table-responsive mailbox-messages">
+
+                        <table class="table table-hover table-striped">
+                            <tbody>
+                                <tr>
+                                    <th class="text-left">ID</th>
+                                    <th class="text-left">Name</th>
+                                    <th class="text-left">Value1</th>
+                                    <th class="text-left">Value2</th>
+                                    <th class="text-left">Value3</th>
+                                    <th class="text-right pad25">Options</th>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <!-- /.table -->
+                    </div>
+
+                    <div class="box-footer clearfix">
+                        <ul class="pagination pagination-sm no-margin pull-right" id="page">
+
+                        </ul>
+
+                </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- /.content-wrapper -->
+
+
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="static/js/jquery.min.js"></script>
+<!-- plugins -->
+<script src="static/js/plugins/dropdown.js"></script>
+
+<script src="static/js/plugins/tooltip.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="static/js/ie10-viewport-bug-workaround.js"></script>
+<!-- scrollbar -->
+<script src="static/js/scrollbar/jquery.mousewheel.js"></script>
+<script src="static/js/scrollbar/perfect-scrollbar.js"></script>
+<script src="https://cdn.bootcss.com/PapaParse/5.0.2/papaparse.min.js"></script>
+
+<script type="text/javascript">
+    // scrollbar 滚动条
+    //------------------------------------------
+    jQuery(document).ready(function ($) {
+        "use strict";
+        $('.scroll_bar').perfectScrollbar();
+    });
+
+
+    // 定义 最大的素组数据 ,2 维数组
+    var allRow = [];
+    var page = 1;
+    var psize = 1;
+    var max_page = 0;
+    var max_count = 0;
+    var allLen =0;
+
+    $(function () {
+        //------------------------------------------
+        $("[data-toggle='tooltip']").tooltip();
+        Papa.parse('data.csv', {
+            download: true,
+            complete: function(results) {
+                var data = results.data;
+                var html='';
+
+
+                for(var i = 1, _l = data.length-1; i < _l; i++) {
+                    var item = data[i];
+                    if(i<=psize){
+                        html += '<tr>';
+                    }else{
+                        html += '<tr style="display: none">';
+                    }
+
+                    allRow.push(item);
+
+
+
+                    html += '<td class="text-left">'+item[0]+'</td>';
+                    html += '<td class="text-left">'+item[1]+'</td>';
+                    html += '<td class="text-left">'+item[2]+'</td>';
+                    html += '<td class="text-left">'+item[3]+'</td>';
+                    html += '<td class="text-left">'+item[4]+'</td>';
+
+                    html += '<td class="text-right">'+
+                        '<a href="javascript:;" onclick="edit()" class="btn btn-success btn-sm"><i class="icon-tools"></i> issue</a>'+
+                    '</td>';
+                    html += '</tr>';
+                }
+
+
+                /*
+                <tr>
+
+
+                                <td class="text-left"><a href="javascript:;" title="title">{{ item.id }}</a> </td>
+                                <td class="text-left">{{ item.name }}</td>
+                                <td class="text-left">{{ item.startDate }}</td>
+                                <td class="text-left">{{ item.endDate }}</td>
+                                <td class="text-left">{{ item.goal }}</td>
+                                <td class="text-left">{{ item.state }}</td>
+                                <td class="text-right">
+                                    <a href="javascript:;" onclick="edit('{{item.id}}')" class="btn btn-success btn-sm"><i class="icon-tools"></i> issue</a>
+                                </td>
+                            </tr>
+                 */
+                $('table tbody').append(html);
+
+                $("#page").empty();
+                $("#page").append(getPageA(1,allRow.length,psize))
+
+
+                // 分页
+                  max_count = allRow.length;
+                  allLen =max_count;
+                //
+                // console.log(max_page)
+
+            }
+        });
+    });
+
+
+
+
+    function getPageA($pageCurrent, $numTotal, $numPerPage = 10)
+    {
+
+
+        $pageTotal = Math.ceil($numTotal / $numPerPage);
+        $index = [];
+        $start = 0;
+        $end = 0;
+        if ($pageTotal < 7) {
+            $start = 2;
+            $end = $pageTotal - 1;
+        } else {
+            if ($pageCurrent - 2 < 2) {
+                $start = 2;
+                $end = $start + 4;
+            } else {
+                if ($pageCurrent + 2 > $pageTotal - 1) {
+                    $end = $pageTotal - 1;
+                    $start = $end - 4;
+                } else {
+                    $start = $pageCurrent - 2;
+                    $end = $pageCurrent + 2;
+                }
+            }
+        }
+        for ($i = $start; $i <= $end; $i++) {
+            $index.push($i);
+        }
+
+
+        var pageStr = '';
+
+       // if ($pageCurrent <= 1){
+       //      pageStr +='<li class="disabled"><a name="page" href="#" aria-label="Previous"><span aria-hidden="true"><i class="icon-arrow-left"></i></span></a></li>';
+       //  }else{
+       //     pageStr +='<li ><a name="page"  href="#" aria-label="Previous"><span aria-hidden="true"><i class="icon-arrow-left"></i></span></a></li>';
+       //
+       // }
+
+        if ($pageCurrent == 1){
+            pageStr +='<li class="active"><a href="#">1 <span class="sr-only"></span></a></li>';
+        }else{
+            pageStr +='<li ><a name="page" href="#">1 <span class="sr-only"></span></a></li>';
+
+
+        }
+        if($start > 2) {
+
+           pageStr +='<li class=""><a name="page" href="javascript:;">...<span class="sr-only"></span></a></li>'
+        }
+
+
+        for (var num=0;num<$index.length;num++) {
+
+              if($pageCurrent==$index[num]) {
+
+                  pageStr +='<li class="active"><a name="page" href="#">'+$index[num]+'<span class="sr-only"></span></a></li>';
+              }else {
+                  pageStr +='<li class=""><a name="page" href="#">'+$index[num]+'<span class="sr-only"></span></a></li>';
+              }
+
+        }
+
+        if($end < $pageTotal - 1) {
+
+            pageStr +='<li class=""><a name="page" href="javascript:;">...<span class="sr-only"></span></a></li>'
+        }
+
+        if($pageTotal!=1) {
+            if($pageTotal==$pageCurrent){
+                pageStr +='<li class="active"><a name="page" href="javascript:;">'+$pageTotal+' <span class="sr-only"></span></a></li>';
+            }else{
+                pageStr +='<li class=""><a name="page" href="javascript:;">'+$pageTotal+' <span class="sr-only"></span></a></li>';
+
+            }
+        }
+
+        // if($pageCurrent==$pageTotal) {
+        //     pageStr +='<li class="disabled"><a name="page" href="javascript:;" aria-label="Next"><span aria-hidden="true"><i class="icon-arrow-right"></i></span></a></li>';
+        // }else {
+        //     pageStr +='<li ><a name="page" href="javascript:;" aria-label="Next"><span aria-hidden="true"><i class="icon-arrow-right"></i></span></a></li>';
+        // }
+
+
+         // console.log(pageStr);
+         return pageStr;
+
+        // return {
+        //     'first' : 1,
+        //     'prev' : $start > 2 ? true : false,
+        //     'index' : $index,
+        //     'next' : $end < $pageTotal - 1 ? true : false,
+        //     'last' : $pageTotal,
+        // };
+
+
+
+    }
+
+
+    $("ul").on("click",'li',function(){
+
+        var currentPage = $(this).text();
+        var keyword = $("#keyword").val();
+
+        var start = (currentPage -1)*psize;
+        var end = currentPage*psize;
+        console.log('start='+start);
+        console.log('end='+end);
+        // 保留第一行显示
+        // 单独把 第二页显示出来，其他隐藏
+
+        var table= $("table tbody")
+        var trs = table.children();
+
+        //  先判断出包含关键字的行数
+        var trlen = trs.length;
+        if(keyword ===''){
+            for (var i=1;i<trlen;i++){
+                if(i >=start && i<=end){
+                    trs[i].style= '';
+                    console.log()
+                    //trs[i].addClass('show')
+                }else{
+                    trs[i].style.display = 'none';
+                }
+
+
+            }
+
+
+            $("#page").empty();
+            $("#page").append(getPageA(currentPage,trlen-1,1));
+        }else{
+
+            max_count = countKeyword(keyword);
+            var countValid = 0;
+            for (var i=1;i<trlen;i++){
+                trs[i].style.display = 'none';
+                if(countValid>end){
+
+                    break;
+                }
+                var thLen = trs[i].children.length-1;
+                var thArr = trs[i].children;
+                for (var j=0; j<thLen; j++) {
+                    var text =thArr[j].innerText;
+                    if ((text.indexOf(keyword) != -1)) {
+                        countValid ++;
+                        console.log('countValid='+countValid);
+                        if(countValid<=start){
+                            // 隐藏
+                            trs[i].style.display = 'none';
+                            break;
+                        }else if(countValid >start && countValid <=end){
+                            console.log('ddd');
+                            trs[i].style= '';
+                            break;
+                        }else{
+                            // 隐藏
+                            trs[i].style.display = 'none';
+                            break;
+                        }
+
+
+                    }
+
+                }
+            }
+            $("#page").empty();
+            $("#page").append(getPageA(currentPage,max_count,psize));
+
+        }
+
+
+
+
+
+    });
+
+
+     $("#search_form").click(function () {
+
+
+         var currentPage = 1;
+         var keyword = $("#keyword").val();
+
+
+         var table= $("table tbody")
+         var trs = table.children();
+
+
+         if(keyword===''){
+             var countValid = 0;
+             for (var i=1;i<trlen;i++){
+                 trs[i].style.display = 'none';
+                 if(countValid>=psize){
+
+                     break;
+                 }
+                 countValid ++;
+                 trs[i].style= '';
+
+             }
+
+             $("#page").empty();
+             $("#page").append(getPageA(1,allRow.length,psize))
+
+         }else{
+             //  先判断出包含关键字的行数
+             var trlen = trs.length;
+             max_count = countKeyword(keyword);
+             // 第一页 找出 psize 个即可
+             var countValid = 0;
+             for (var i=1;i<trlen;i++){
+                 trs[i].style.display = 'none';
+                 if(countValid>=psize){
+
+                     break;
+                 }
+                 var thLen = trs[i].children.length-1;
+
+                 var thArr = trs[i].children;
+                 // console.log(thLen)
+
+                 for (var j=0; j <thLen; j++) {
+
+                     var text =thArr[j].innerText;
+
+                     if ((text.indexOf(keyword) != -1)) {
+                         countValid ++;
+                         trs[i].style= '';
+                         break;
+                     }
+
+                 }
+             }
+             $("#page").empty();
+             $("#page").append(getPageA(currentPage,max_count,psize));
+         }
+
+
+
+
+     });
+
+
+     function countKeyword(keyword) {
+
+         var count = 0;
+         for (var i = 0; i < allLen; i++) {
+             var thLen = allRow[i].length;
+             for (var j = 0; j < thLen; j++) {
+
+                 if ((allRow[i][j].indexOf(keyword) != -1)) {
+                     count++;
+                     break;
+                 }
+
+             }
+
+         }
+
+
+         return count;
+     }
+</script>
+<!-- AdminLTE App -->
+<script src="static/js/app.js"></script>
+</body>
+</html>

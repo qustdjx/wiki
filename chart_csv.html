@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="static/img/ico/favicon.ico">
+
+    <title>View Title</title>
+
+    <!-- Ploceidae core CSS -->
+    <link href="static/css/ploceidae.css" rel="stylesheet">
+    <!-- perfect-scrollbar CSS -->
+    <link href="static/css/perfect-scrollbar.css" rel="stylesheet">
+    <!-- iCheck -->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="static/js/html5shiv.min.js"></script>
+    <script src="static/js/respond.min.js"></script>
+
+    <![endif]-->
+</head>
+
+<body style="overflow: scroll;">
+<!-- Main Header -->
+
+
+<!-- Content Wrapper. Contains page content -->
+
+<div class="content">
+    <ol class="breadcrumb">
+        <li><a href="javascript:;"><i class="icon-store"></i> Sprint</a></li>
+        <li><a href="javascript:;">DATA</a></li>
+    </ol>
+
+    <div>
+        <div id="first_bar" style="float:left;height:800px;width: 800px;display:inline-block;"></div>
+        <div style="float:left;display:inline-block;width: 600px;height: 800px">
+            <div id="second_bar" style="width: 600px;height: 350px;"></div>
+            <div id="third_bar"  style="width: 600px;height: 350px;"></div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- /.content-wrapper -->
+
+
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="static/js/jquery.min.js"></script>
+<!-- plugins -->
+<script src="static/js/plugins/dropdown.js"></script>
+<script src="static/js/plugins/tooltip.js"></script>
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="static/js/ie10-viewport-bug-workaround.js"></script>
+<!-- scrollbar -->
+<script src="static/js/scrollbar/jquery.mousewheel.js"></script>
+<script src="static/js/scrollbar/perfect-scrollbar.js"></script>
+
+<!-- echarts -->
+<script src="static/js/plugins/echarts/echarts.common.min.js"></script>
+<script src="static/js/plugins/echarts/echarts.min.js"></script>
+<script src="https://cdn.bootcss.com/PapaParse/5.0.2/papaparse.min.js"></script>
+<script type="text/javascript">
+
+   var allRow = [];
+    // scrollbar 滚动条
+    //------------------------------------------
+    jQuery(document).ready(function ($) {
+        $('.scroll_bar').perfectScrollbar();
+
+        max_count = 0;
+        Papa.parse('./data.csv', {
+            download: true,
+            complete: function(results) {
+                var data = results.data;
+                for(var i = 1, _l = data.length-1; i < _l; i++) {
+                    var item = data[i];
+                    allRow.push(item);
+
+                }
+
+
+
+                // 因是异步加载
+                // first -------------
+                var first_bar = echarts.init(document.getElementById('first_bar'));
+
+                var first_x_arr = ['x1','x2','x3'];
+                var first_y_arr = [1,2,3];
+                var app = {};
+                option = null;
+                option = {
+                    color: ['#b0db46'],
+                    title:{
+                        x: 'center',
+                        text:'chart 1',
+                        textStyle:{
+                            //文字颜色
+                            color:'#cc4617',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle:'normal',
+                            //字体粗细 'normal',
+                            fontWeight:'bold',
+                            //字体系列
+                            fontFamily:'sans-serif',
+                            //字体大小
+                            fontSize:18,
+                        }
+                    },
+                    grid: {
+                        left: '10%',
+                        bottom:'25%'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: first_x_arr,
+                        axisLabel:{interval: 0,rotate: 60}
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        data: first_y_arr,
+                        type: 'bar',
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+                        },
+                    }]
+                };
+
+                if (option && typeof option === "object") {
+                    first_bar.setOption(option, true);
+                }
+
+                first_bar.on('click', function(param) {
+
+                    alert('点击响应');
+                });
+
+                // second -------------
+                var second_x_arr = ['x1','x2','x3'];
+                var second_y_arr = [1,2,3];
+                var second_bar = echarts.init(document.getElementById('second_bar'));
+                var app = {};
+                option = null;
+                option = {
+                    color: ['#b0db46'],
+                    title:{
+                        x: 'left',  // title position
+                        text:'chart 2',
+                        textStyle:{
+                            //文字颜色
+                            color:'#cc4617',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle:'normal',
+                            //字体粗细 'normal',
+                            fontWeight:'bold',
+                            //字体系列
+                            fontFamily:'sans-serif',
+                            //字体大小
+                            fontSize:18,
+                        }
+                    },
+                    grid: {
+                        left: '10%',
+                        bottom:'25%'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: second_x_arr,
+                        axisLabel:{interval: 0,rotate: 60}
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        data: second_y_arr,
+                        type: 'bar',
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+                        },
+                    }]
+                };
+
+                if (option && typeof option === "object") {
+                    second_bar.setOption(option, true);
+                }
+
+                second_bar.on('click', function(param) {
+
+                    alert('点击响应');
+                })
+
+                // third -------------
+
+                var third_x_arr = ['x1','x2','x3'];
+                var third_y_arr = [1,2,3];
+                var third_bar = echarts.init(document.getElementById('third_bar'));
+                var app = {};
+                option = null;
+                option = {
+                    color: ['#b0db46'],
+                    title:{
+                        x: 'center',
+                        text:'chart 3',
+                        textStyle:{
+                            //文字颜色
+                            color:'#cc4617',
+                            //字体风格,'normal','italic','oblique'
+                            fontStyle:'normal',
+                            //字体粗细 'normal',
+                            fontWeight:'bold',
+                            //字体系列
+                            fontFamily:'sans-serif',
+                            //字体大小
+                            fontSize:18,
+                        }
+                    },
+                    grid: {
+                        left: '10%',
+                        bottom:'25%'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: third_x_arr,
+                        axisLabel:{interval: 0,rotate: 60}
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        data: third_y_arr,
+                        type: 'bar',
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                // 随机显示
+                                color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
+
+                                // 定制显示（按顺序）
+                                // color: function(params) {
+                                //     var colorList = ['#C33531','#EFE42A','#64BD3D','#EE9201','#29AAE3', '#B74AE5','#0AAF9F','#E89589','#16A085','#4A235A','#C39BD3 ','#F9E79F','#BA4A00','#ECF0F1','#616A6B','#EAF2F8','#4A235A','#3498DB' ];
+                                //     return colorList[params.dataIndex]
+                                // }
+                            },
+                        }
+                    }]
+                };
+
+                if (option && typeof option === "object") {
+                    third_bar.setOption(option, true);
+                }
+
+                third_bar.on('click', function(param) {
+                    alert('点击响应');
+                })
+
+               // -end
+            }
+        });
+
+
+
+    });
+
+
+
+</script>
+
+<script type="text/javascript">
+
+</script>
+<!-- AdminLTE App -->
+<script src="static/js/app.js"></script>
+</body>
+</html>
